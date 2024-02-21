@@ -1,7 +1,8 @@
-import { createApp } from 'vue'
-import './style.css'
+import Vue from 'vue'
 import App from './App.vue'
 
-const app = createApp(App)
+Vue.config.productionTip = false
 
-app.mount('#app')
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
