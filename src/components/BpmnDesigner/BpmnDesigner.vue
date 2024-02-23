@@ -24,9 +24,17 @@ export default {
         };
     },
     computed: {
+        // 网状背景
         bgCanvas() {
-            // 网状背景
             return 'nets-canvas';
+        },
+        // 自定义功能扩展
+        additionalModules() {
+            return [];
+        },
+        // 自定义模型定制扩展
+        moddleExtensions() {
+            return {};
         }
     },
     mounted() {
@@ -39,6 +47,8 @@ export default {
             // 建模
             this.bpmnModeler = new BpmnModeler({
                 container: canvas,
+                additionalModules: this.additionalModules,
+                moddleExtensions: this.moddleExtensions
             });
             this.createNewDiagram();
         },
