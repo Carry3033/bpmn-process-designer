@@ -7,6 +7,7 @@
 <script>
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import defaultXML from '@/entity/defaultXml';
+import customPalette from '@/plugins/palette';
 
 export default {
     name: 'BpmnDesigner',
@@ -48,7 +49,8 @@ export default {
             this.bpmnModeler = new BpmnModeler({
                 container: canvas,
                 additionalModules: this.additionalModules,
-                moddleExtensions: this.moddleExtensions
+                moddleExtensions: this.moddleExtensions,
+                customModule: customPalette
             });
             this.createNewDiagram();
         },
