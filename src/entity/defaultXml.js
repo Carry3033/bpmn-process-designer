@@ -23,9 +23,9 @@ export default (key, name, type) => {
             <startEvent id="StartEvent_1y45yut" name="开始">
                 <outgoing>SequenceFlow_0h21x7r</outgoing>
             </startEvent>
-            <task id="Task_1hcentk">
+            <userTask id="Task_1hcentk">
                 <incoming>SequenceFlow_0h21x7r</incoming>
-            </task>
+            </userTask>
             <sequenceFlow id="SequenceFlow_0h21x7r" sourceRef="StartEvent_1y45yut" targetRef="Task_1hcentk" />
         </process>
         <bpmndi:BPMNDiagram id="BpmnDiagram_1">
@@ -37,7 +37,7 @@ export default (key, name, type) => {
                 </bpmndi:BPMNLabel>
             </bpmndi:BPMNShape>
             <bpmndi:BPMNShape id="Task_1hcentk_di" bpmnElement="Task_1hcentk">
-                <omgdc:Bounds x="240" y="80" width="100" height="80" />
+                <omgdc:Bounds x="240" y="100" width="100" height="40" />
             </bpmndi:BPMNShape>
             <bpmndi:BPMNEdge id="SequenceFlow_0h21x7r_di" bpmnElement="SequenceFlow_0h21x7r">
                 <omgdi:waypoint x="188" y="120" />

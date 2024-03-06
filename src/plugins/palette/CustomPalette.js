@@ -55,7 +55,7 @@ F.prototype.getPaletteEntries = function () {
             );
 
             if (options) {
-                shape.businessObject.di.isExpanded = options.isExpanded; // di只能通过diagram元素使用
+                // shape.businessObject.di.isExpanded = options.isExpanded; // di只能通过diagram元素使用
                 shape.businessObject.name = options.name;
             }
 
