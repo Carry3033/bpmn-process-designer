@@ -55,7 +55,7 @@ F.prototype.getPaletteEntries = function () {
             );
 
             if (options) {
-                // shape.businessObject.di.isExpanded = options.isExpanded; // di 是只读的
+                shape.businessObject.di.isExpanded = options.isExpanded; // di只能通过diagram元素使用
                 shape.businessObject.name = options.name;
             }
 
@@ -73,6 +73,32 @@ F.prototype.getPaletteEntries = function () {
                 click: createListener,
             },
         };
+    }
+
+    function createSubprocess(event) {
+        const subProcess = elementFactory.createShape({
+            type: 'bpmn:SubProcess',
+            x: 0,
+            y: 0,
+            isExpanded: true,
+        });
+
+        const startEvent = elementFactory.createShape({
+            type: 'bpmn:StartEvent',
+            x: 40,
+            y: 82,
+            parent: subProcess,
+        });
+
+        create.start(event, [subProcess, startEvent], {
+            hints: {
+                autoSelect: [startEvent],
+            },
+        });
+    }
+
+    function createParticipant(event) {
+        create.start(event, elementFactory.createParticipantShape());
     }
 
     assign(actions, {
@@ -121,7 +147,7 @@ F.prototype.getPaletteEntries = function () {
             group: 'tools',
             separator: true,
         },
-        // 创建开始事件
+        // 开始事件
         'create.start-event': createAction(
             'bpmn:StartEvent',
             'event',
@@ -130,7 +156,7 @@ F.prototype.getPaletteEntries = function () {
             { name: translate('Start') }
         ),
         // 中间事件
-         'create.throw-none-event': createAction(
+        'create.throw-none-event': createAction(
             'bpmn:IntermediateThrowEvent',
             'event',
             'bpmn-icon-intermediate-event-none',
@@ -141,8 +167,22 @@ F.prototype.getPaletteEntries = function () {
             'bpmn:EndEvent',
             'event',
             'bpmn-icon-end-event-none',
-            translate('End Event'), 
+            translate('End Event'),
             { name: translate('End') }
+        ),
+        // 互斥网关
+        'create.exclusive-gateway': createAction(
+            'bpmn:ExclusiveGateway',
+            'gateway',
+            'bpmn-icon-gateway-xor',
+            translate('Exclusive Gateway')
+        ),
+        // 并行网关
+        'create.parallel-gateway': createAction(
+            'bpmn:ParallelGateway',
+            'gateway',
+            'bpmn-icon-gateway-parallel',
+            translate('Parallel Gateway')
         ),
         // 用户任务
         'create.user-task': createAction(
@@ -160,130 +200,43 @@ F.prototype.getPaletteEntries = function () {
             translate('Service Task'),
             { height: 40 }
         ),
-        // 发送任务
-        'create.send-task': createAction(
-            'bpmn:SendTask',
-            'more',
-            'bpmn-icon-send-task',
-            translate('Send Task'),
-            { height: 40 }
+        // 子流程
+        'create.subprocess': {
+            group: 'structure',
+            className: 'bpmn-icon-subprocess-expanded',
+            title: translate('Sub Process'),
+            action: {
+                dragstart: createSubprocess,
+                click: createSubprocess,
+            },
+        },
+        'create.data-object': createAction(
+            'bpmn:DataObjectReference',
+            'data-object',
+            'bpmn-icon-data-object',
+            translate('Create DataObjectReference')
         ),
-        // 互斥网关
-        'create.exclusive-gateway': createAction(
-            'bpmn:ExclusiveGateway',
-            'gateway',
-            'bpmn-icon-gateway-xor',
-            translate('Exclusive Gateway')
+        'create.data-store': createAction(
+            'bpmn:DataStoreReference',
+            'data-store',
+            'bpmn-icon-data-store',
+            translate('Create DataStoreReference')
         ),
-        // 并行网关
-        'create.parallel-gateway': createAction(
-            'bpmn:ParallelGateway',
-            'gateway',
-            'bpmn-icon-gateway-parallel',
-            translate('Parallel Gateway')
+        'create.participant-expanded': {
+            group: 'collaboration',
+            className: 'bpmn-icon-participant',
+            title: translate('Create Pool/Participant'),
+            action: {
+                dragstart: createParticipant,
+                click: createParticipant,
+            },
+        },
+        'create.group': createAction(
+            'bpmn:Group',
+            'artifact',
+            'bpmn-icon-group',
+            translate('Create Group')
         ),
-        // 包容性网关
-        'create.inclusive-gateway': createAction(
-            'bpmn:InclusiveGateway',
-            'gateway',
-            'bpmn-icon-gateway-or',
-            translate('Inclusive Gateway')
-        ),
-        // 'create.start-signal-event': createAction(
-        //     'bpmn:StartEvent',
-        //     'more',
-        //     'bpmn-icon-start-event-signal',
-        //     translate('Signal Start Event'), // 信号开始事件
-        //     { eventDefinitionType: 'bpmn:SignalEventDefinition' }
-        // ),
-        // 'create.start-timer-event': createAction(
-        //     'bpmn:StartEvent',
-        //     'event',
-        //     'bpmn-icon-start-event-timer',
-        //     translate('Timer Start Event'), // 定时开始事件
-        //     { eventDefinitionType: "bpmn:TimerEventDefinition" }
-        // ),
-        // 'create.catch-timer-event': createAction(
-        //     'bpmn:IntermediateCatchEvent',
-        //     'intermediate',
-        //     'bpmn-icon-intermediate-event-catch-timer',
-        //     translate('Timer Intermediate Catch Event'), // 中间定时器捕获事件
-        //     { eventDefinitionType: 'bpmn:TimerEventDefinition' }
-        // ),
-        // 'create.catch-signal-event': createAction(
-        //     'bpmn:IntermediateCatchEvent',
-        //     'intermediate',
-        //     'bpmn-icon-intermediate-event-catch-signal',
-        //     translate('Signal Intermediate Catch Event'), // 中间信号捕获事件
-        //     { eventDefinitionType: 'bpmn:SignalEventDefinition' }
-        // ),
-        // 'create.throw-signal-event': createAction(
-        //     'bpmn:IntermediateThrowEvent',
-        //     'intermediate',
-        //     'bpmn-icon-intermediate-event-throw-signal',
-        //     translate('Signal Intermediate Throw Event'), // 中间信号抛出事件
-        //     { eventDefinitionType: "bpmn:SignalEventDefinition" }
-        // ),
-        // 'create.end-error-event': createAction(
-        //     'bpmn:EndEvent',
-        //     'end',
-        //     'bpmn-icon-end-event-error',
-        //     translate('Error End Event'), // 结束错误事件
-        //     { eventDefinitionType: "bpmn:ErrorEventDefinition" }
-        // ),
-        // 'create.sub-process': {
-        //     group: 'structure',
-        //     className: 'bpmn-icon-subprocess-expanded',
-        //     title: translate('Sub Process'), // 子流程
-        //     action: {
-        //         dragstart: createSubprocess,
-        //         click: createSubprocess,
-        //     },
-        // },
-        // 'create.call-activity': createAction(
-        //     'bpmn:CallActivity',
-        //     'structure',
-        //     'bpmn-icon-call-activity',
-        //     translate('Call Activity') // 调动活动
-        // ),
-        // 'create.pool': {
-        //     group: 'lane',
-        //     className: 'bpmn-icon-participant',
-        //     title: translate('Pool'), // 池
-        //     action: {
-        //         dragstart: createParticipant,
-        //         click: createParticipant,
-        //     },
-        // },
-        // 'create.lane': {
-        //     group: 'lane',
-        //     className: 'bpmn-icon-lane',
-        //     title: translate('Lane'), // 道
-        //     action: {
-        //         dragstart: createParticipant,
-        //         click: createParticipant,
-        //     },
-        // }
-        // 'create.event-gateway': createAction(
-        //     'bpmn:EventBasedGateway',
-        //     'more',
-        //     'bpmn-icon-gateway-eventbased',
-        //     translate('Event based Gateway') // 事件网关
-        // ),
-        // 'create.error-boundary-event': createAction(
-        //     'bpmn:BoundaryEvent',
-        //     'more',
-        //     'bpmn-icon-intermediate-event-catch-error',
-        //     translate('Error Boundary Event'), // 边界错误事件
-        //     { eventDefinitionType: 'bpmn:ErrorEventDefinition' }
-        // ),
-        // 'create.compensation-boundary-event': createAction(
-        //     'bpmn:BoundaryEvent',
-        //     'more',
-        //     'bpmn-icon-intermediate-event-catch-compensation',
-        //     translate('Compensation Boundary Event'), // 边界修正事件
-        //     { eventDefinitionType: "bpmn:CompensateEventDefinition" }
-        // ),
     });
 
     return actions;
