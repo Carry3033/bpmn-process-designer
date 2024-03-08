@@ -15,7 +15,7 @@
 // };
 
 // custom/index.js
-import CustomPalette from './CustomPalette';
+import CustomPalette from './customPalette';
 
 export default {
     __init__: ['paletteProvider'],

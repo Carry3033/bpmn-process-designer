@@ -1,7 +1,7 @@
 import { assign } from 'min-dash';
 
 /**
- * 参考文件
+ * A palette provider for BPMN 2.0 elements.
  */
 export default function PaletteProvider(
     palette,
