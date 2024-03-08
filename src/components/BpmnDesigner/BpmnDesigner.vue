@@ -50,7 +50,7 @@ export default {
                 container: canvas,
                 additionalModules: this.additionalModules,
                 moddleExtensions: this.moddleExtensions,
-                customModule: customPalette
+                customModule: customPalette // 自定义工具栏元素
             });
             this.createNewDiagram();
         },
