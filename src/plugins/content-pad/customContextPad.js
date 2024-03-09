@@ -250,9 +250,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
     }
 
     // 删除标题条目
-    ReplaceMenuProvider.prototype._getLoopEntries = function () {
-        return [];
-    }
+    // ReplaceMenuProvider.prototype._getLoopEntries = function () {
+    //     return [];
+    // }
 
     if (
         isAny(businessObject, ['bpmn:Lane', 'bpmn:Participant']) &&

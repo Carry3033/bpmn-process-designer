@@ -8,6 +8,7 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import defaultXML from '@/entity/defaultXml';
 import customPalette from '@/plugins/palette';
+import cunstomContentPad from '@/plugins/content-pad';
 
 export default {
     name: 'BpmnDesigner',
@@ -31,7 +32,7 @@ export default {
         },
         // 自定义功能扩展
         additionalModules() {
-            return [];
+            return [cunstomContentPad];
         },
         // 自定义模型定制扩展
         moddleExtensions() {
