@@ -404,15 +404,15 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
     }
 
     // 用来隐藏部分可替换元素 deleteEntries
-    popupMenu.registerProvider('bpmn-replace', {
-        getPopupMenuEntries () {
-            return function (_entries) {
-                const entries = Object.assign({}, _entries);
-                deleteEntries.forEach(palette => delete entries[palette]);
-                return entries;
-            }
-        }
-    })
+    // popupMenu.registerProvider('bpmn-replace', {
+    //     getPopupMenuEntries () {
+    //         return function (_entries) {
+    //             const entries = Object.assign({}, _entries);
+    //             deleteEntries.forEach(palette => delete entries[palette]);
+    //             return entries;
+    //         }
+    //     }
+    // })
 
     if (!popupMenu.isEmpty(element, 'bpmn-replace')) {
         // Replace menu entry
