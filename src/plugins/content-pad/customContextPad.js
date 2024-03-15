@@ -10,7 +10,7 @@ import { getChildLanes } from 'bpmn-js/lib/features/modeling/util/LaneUtil';
 
 import { hasPrimaryModifier } from 'diagram-js/lib/util/Mouse';
 
-import ReplaceMenuProvider from "bpmn-js/lib/features/popup-menu/ReplaceMenuProvider";
+import ReplaceMenuProvider from 'bpmn-js/lib/features/popup-menu/ReplaceMenuProvider';
 
 /**
  * A provider for BPMN 2.0 elements context pad
@@ -79,7 +79,7 @@ ContextPadProvider.$inject = [
     'canvas',
     'rules',
     'translate',
-    'elementRegistry',
+    'elementRegistry'
 ];
 
 ContextPadProvider.prototype.getContextPadEntries = function (element) {
@@ -142,7 +142,7 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
             // 网关
             'replace-with-complex-gateway',
             'replace-with-event-based-gateway', // 事件网关
-            'replace-with-inclusive-gateway',
+            'replace-with-inclusive-gateway'
         ];
 
     const actions = {};
@@ -175,7 +175,7 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
 
         const pos = {
             x: left,
-            y: top + padRect.height + Y_OFFSET,
+            y: top + padRect.height + Y_OFFSET
         };
 
         return pos;
@@ -195,29 +195,25 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
         if (typeof title !== 'string') {
             options = title;
             title = translate('Append {type}', {
-                type: type.replace(/^bpmn:/, ''),
+                type: type.replace(/^bpmn:/, '')
             });
         }
 
         function appendStart(event, element) {
-            const shape = elementFactory.createShape(
-                assign({ type: type }, options)
-            );
+            const shape = elementFactory.createShape(assign({ type: type }, options));
 
             if (options) {
                 shape.businessObject.name = options.name;
             }
 
             create.start(event, shape, {
-                source: element,
+                source: element
             });
         }
 
         const append = autoPlace
             ? function (event, element) {
-                  const shape = elementFactory.createShape(
-                      assign({ type: type }, options)
-                  );
+                  const shape = elementFactory.createShape(assign({ type: type }, options));
 
                   if (options) {
                       shape.businessObject.name = options.name;
@@ -233,8 +229,8 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
             title: title,
             action: {
                 dragstart: appendStart,
-                click: append,
-            },
+                click: append
+            }
         };
     }
 
@@ -254,10 +250,7 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
     //     return [];
     // }
 
-    if (
-        isAny(businessObject, ['bpmn:Lane', 'bpmn:Participant']) &&
-        isExpanded(businessObject)
-    ) {
+    if (isAny(businessObject, ['bpmn:Lane', 'bpmn:Participant']) && isExpanded(businessObject)) {
         const childLanes = getChildLanes(element);
 
         assign(actions, {
@@ -268,9 +261,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                 action: {
                     click: function (event, element) {
                         modeling.addLane(element, 'top');
-                    },
-                },
-            },
+                    }
+                }
+            }
         });
 
         if (childLanes.length < 2) {
@@ -281,9 +274,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                         className: 'bpmn-icon-lane-divide-two',
                         title: translate('Divide into two Lanes'),
                         action: {
-                            click: splitLaneHandler(2),
-                        },
-                    },
+                            click: splitLaneHandler(2)
+                        }
+                    }
                 });
             }
 
@@ -294,9 +287,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                         className: 'bpmn-icon-lane-divide-three',
                         title: translate('Divide into three Lanes'),
                         action: {
-                            click: splitLaneHandler(3),
-                        },
-                    },
+                            click: splitLaneHandler(3)
+                        }
+                    }
                 });
             }
         }
@@ -309,9 +302,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                 action: {
                     click: function (event, element) {
                         modeling.addLane(element, 'bottom');
-                    },
-                },
-            },
+                    }
+                }
+            }
         });
     }
 
@@ -346,15 +339,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                     'bpmn-icon-intermediate-event-catch-signal',
                     translate('Append SignalIntermediateCatchEvent'),
                     { eventDefinitionType: 'bpmn:SignalEventDefinition' }
-                ),
+                )
             });
-        } else if (
-            isEventType(
-                businessObject,
-                'bpmn:BoundaryEvent',
-                'bpmn:CompensateEventDefinition'
-            )
-        ) {
+        } else if (isEventType(businessObject, 'bpmn:BoundaryEvent', 'bpmn:CompensateEventDefinition')) {
             assign(actions, {
                 'append.compensation-activity': appendAction(
                     'bpmn:UserTask',
@@ -364,16 +351,12 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                         isForCompensation: true,
                         height: 40
                     }
-                ),
+                )
             });
         } else if (
             !is(businessObject, 'bpmn:EndEvent') &&
             !businessObject.isForCompensation &&
-            !isEventType(
-                businessObject,
-                'bpmn:IntermediateThrowEvent',
-                'bpmn:LinkEventDefinition'
-            ) &&
+            !isEventType(businessObject, 'bpmn:IntermediateThrowEvent', 'bpmn:LinkEventDefinition') &&
             !isEventSubProcess(businessObject)
         ) {
             assign(actions, {
@@ -388,17 +371,14 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                     'bpmn-icon-gateway-none',
                     translate('Append Gateway')
                 ),
-                'append.append-task': appendAction(
-                    'bpmn:UserTask',
-                    'bpmn-icon-user-task',
-                    translate('Append Task'),
-                    { height: 40 }
-                ),
+                'append.append-task': appendAction('bpmn:UserTask', 'bpmn-icon-user-task', translate('Append Task'), {
+                    height: 40
+                }),
                 'append.intermediate-event': appendAction(
                     'bpmn:IntermediateThrowEvent',
                     'bpmn-icon-intermediate-event-none',
                     translate('Append Intermediate/Boundary Event')
-                ),
+                )
             });
         }
     }
@@ -424,13 +404,13 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                 action: {
                     click: function (event, element) {
                         var position = assign(getReplaceMenuPosition(element), {
-                            cursor: { x: event.x, y: event.y },
+                            cursor: { x: event.x, y: event.y }
                         });
 
                         popupMenu.open(element, 'bpmn-replace', position);
-                    },
-                },
-            },
+                    }
+                }
+            }
         });
     }
 
@@ -439,39 +419,29 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
             'bpmn:FlowNode',
             'bpmn:InteractionNode',
             'bpmn:DataObjectReference',
-            'bpmn:DataStoreReference',
+            'bpmn:DataStoreReference'
         ])
     ) {
         assign(actions, {
-            'append.text-annotation': appendAction(
-                'bpmn:TextAnnotation',
-                'bpmn-icon-text-annotation'
-            ),
+            'append.text-annotation': appendAction('bpmn:TextAnnotation', 'bpmn-icon-text-annotation'),
 
             connect: {
                 group: 'connect',
                 className: 'bpmn-icon-connection-multi',
                 title: translate(
                     'Connect using ' +
-                        (businessObject.isForCompensation
-                            ? ''
-                            : 'Sequence/MessageFlow or ') +
+                        (businessObject.isForCompensation ? '' : 'Sequence/MessageFlow or ') +
                         'Association'
                 ),
                 action: {
                     click: startConnect,
-                    dragstart: startConnect,
-                },
-            },
+                    dragstart: startConnect
+                }
+            }
         });
     }
 
-    if (
-        isAny(businessObject, [
-            'bpmn:DataObjectReference',
-            'bpmn:DataStoreReference',
-        ])
-    ) {
+    if (isAny(businessObject, ['bpmn:DataObjectReference', 'bpmn:DataStoreReference'])) {
         assign(actions, {
             connect: {
                 group: 'connect',
@@ -479,24 +449,21 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                 title: translate('Connect using DataInputAssociation'),
                 action: {
                     click: startConnect,
-                    dragstart: startConnect,
-                },
-            },
+                    dragstart: startConnect
+                }
+            }
         });
     }
 
     if (is(businessObject, 'bpmn:Group')) {
         assign(actions, {
-            'append.text-annotation': appendAction(
-                'bpmn:TextAnnotation',
-                'bpmn-icon-text-annotation'
-            ),
+            'append.text-annotation': appendAction('bpmn:TextAnnotation', 'bpmn-icon-text-annotation')
         });
     }
 
     // delete element entry, only show if allowed by rules
     var deleteAllowed = rules.allowed('elements.delete', {
-        elements: [element],
+        elements: [element]
     });
 
     if (isArray(deleteAllowed)) {
@@ -511,9 +478,9 @@ ContextPadProvider.prototype.getContextPadEntries = function (element) {
                 className: 'bpmn-icon-trash',
                 title: translate('Remove'),
                 action: {
-                    click: removeElement,
-                },
-            },
+                    click: removeElement
+                }
+            }
         });
     }
 
