@@ -1,6 +1,6 @@
-import CustomContextPad from "./customContextPad";
+import CustomContextPad from './customContextPad';
 
 export default {
-  __init__: ["contextPadProvider"],
-  contextPadProvider: ["type", CustomContextPad]
+    __init__: ['contextPadProvider'],
+    contextPadProvider: ['type', CustomContextPad],
 };
